@@ -54,6 +54,7 @@ This project is licensed under the GNU 3.0 license - see the LICENSE file for mo
 
 
 # Credits and Acknowledgments
+Original idea by [@mrd0x](https://twitter.com/mrd0x): https://mrd0x.com/bypass-2fa-using-novnc \
 This tool has been created and designed from scratch by Joel Gámez Molina // @JoelGMSec
 
 
