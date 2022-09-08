@@ -5,7 +5,7 @@ LABEL maintainer="JoelGMSec - https://darkbyte.net"
 ENV DISPLAY :0
 ENV RESOLUTION 1920x1080x24
 
-RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 git openssl && \
+RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 git openssl curl && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
@@ -24,6 +24,9 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     sudo apk del git
 
 RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
+    echo 'cp /home/user/noVNC/vnc_lite.html /home/user/noVNC/index.html' >> /home/user/kiosk.sh && \
+    echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
+    echo 'echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html' >> /home/user/kiosk.sh && \
     echo 'sudo chmod a-rwx /usr/bin/xfce4-panel && sudo chmod a-rwx /usr/bin/thunar' >> /home/user/kiosk.sh && \
     echo 'sudo mkdir Downloads 2> /dev/null && sudo chmod 777 -R Downloads && sudo chmod 777 kiosk.zip' >> /home/user/kiosk.sh && \
     echo 'sudo mkdir -p /var/run/dbus && sudo dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address' >> /home/user/kiosk.sh && \
@@ -31,7 +34,6 @@ RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
     chmod +x /home/user/kiosk.sh
 
 RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
-    echo 'cp /home/user/noVNC/vnc_lite.html /home/user/noVNC/index.html' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "while true ; do sleep 30 ; python3 cookies.py > Downloads/Cookies.txt ; done" &' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "while true ; do sleep 30 ; cp -R /home/user/.config/chromium/Default /home/user/Downloads/ ; done" &' >> /home/user/startVNC.sh && \
     echo 'sudo rm -f /tmp/.X${DISPLAY#:}-lock' >> /home/user/startVNC.sh && \
