@@ -62,7 +62,7 @@
         // When this function is called, the server requires
         // credentials to authenticate
         function credentialsAreRequired(e) {
-            const password = prompt("Password Required:");
+            const password = 'false';
             rfb.sendCredentials({ password: password });
         }
 
