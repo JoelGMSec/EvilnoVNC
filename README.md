@@ -49,6 +49,18 @@ Examples:
 
 https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 
+# Features & To Do
+- [X] Export Evil-Chromium profile to host
+- [X] Save download files on host
+- [X] Disable parameters in URL (like password)
+- [X] Disable key combinations (like Alt+1 or Ctrl+S)
+- [X] Disable access to Thunar
+- [ ] Decrypt cookies in real time
+- [ ] Dynamic resolution from preload page
+- [ ] Replicate real user-agent and other stuff
+- [ ] Basic keylogger
+
+
 # License
 This project is licensed under the GNU 3.0 license - see the LICENSE file for more details.
 
