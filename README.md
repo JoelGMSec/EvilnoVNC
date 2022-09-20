@@ -55,7 +55,9 @@ https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 - [X] Disable parameters in URL (like password)
 - [X] Disable key combinations (like Alt+1 or Ctrl+S)
 - [X] Disable access to Thunar
-- [ ] Decrypt cookies in real time
+- [X] Decrypt cookies in real time
+- [X] Expand cookie life to 99999999999999999
+- [X] Dynamic title from original website
 - [ ] Dynamic resolution from preload page
 - [ ] Replicate real user-agent and other stuff
 - [ ] Basic keylogger
