@@ -4,6 +4,7 @@ LABEL maintainer="JoelGMSec - https://darkbyte.net"
 
 ENV DISPLAY :0
 ENV RESOLUTION 1920x1080x24
+ENV FOLDER default
 
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev && \
     ln -s /usr/bin/python3 /usr/bin/python && \
@@ -24,7 +25,8 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     sudo apk del git
 
 RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
-    echo 'cp /home/user/noVNC/vnc_lite.html /home/user/noVNC/index.html' >> /home/user/kiosk.sh && \
+    echo 'mkdir /home/user/$FOLDER && mv /home/user/noVNC /home/user/$FOLDER/' >> /home/user/kiosk.sh && \
+    echo 'cp /home/user/$FOLDER/noVNC/vnc_lite.html /home/user/$FOLDER/noVNC/index.html' >> /home/user/kiosk.sh && \
     echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
     echo 'echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html' >> /home/user/kiosk.sh && \
     echo 'sudo chmod a-rwx /usr/bin/xfce4-panel && sudo chmod a-rwx /usr/bin/thunar' >> /home/user/kiosk.sh && \
@@ -43,7 +45,7 @@ RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
     echo 'nohup startxfce4 > /dev/null || true &' >> /home/user/startVNC.sh && \
     echo 'sudo rm -f ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml' >> /home/user/startVNC.sh && \
     echo 'nohup x11vnc -xkb -noxrecord -noxfixes -noxdamage -many -shared -display $DISPLAY -rfbauth /home/user/.vnc/passwd -rfbport 5900 "$@" &' >> /home/user/startVNC.sh && \
-    echo 'nohup /home/user/noVNC/utils/novnc_proxy --vnc localhost:5900 --listen 5980' >> /home/user/startVNC.sh && \
+    echo 'nohup /home/user/$FOLDER/noVNC/utils/novnc_proxy --vnc localhost:5900 --listen 5980' >> /home/user/startVNC.sh && \
     chmod +x /home/user/startVNC.sh
 
 COPY Files/cookies.py /home/user/
