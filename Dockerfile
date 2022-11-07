@@ -25,9 +25,10 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     sudo apk del git
 
 RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
-    echo 'mkdir /home/user/$FOLDER && mv /home/user/noVNC /home/user/$FOLDER/' >> /home/user/kiosk.sh && \
-    echo 'cp /home/user/$FOLDER/noVNC/vnc_lite.html /home/user/$FOLDER/noVNC/index.html' >> /home/user/kiosk.sh && \
+    echo 'mkdir /home/user/noVNC/$FOLDER && mv /home/user/noVNC/* /home/user/noVNC/$FOLDER/; mv /home/user/noVNC/$FOLDER/utils /home/user/noVNC/; mv /home/user/noVNC/$FOLDER/*.html /home/user/noVNC/' > /home/user/kiosk.sh && \
     echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
+    echo 'sed -i "124d" /home/user/noVNC/vnc_lite.html &&  sed  "131 i let path=\"$FOLDER/websockify\"" /home/user/noVNC/vnc_lite.html > /home/user/noVNC/index.html ' >> /home/user/kiosk.sh && \
+    #echo 'cp /home/user/noVNC/vnc_lite.html /home/user/noVNC/index.html' >> /home/user/kiosk.sh && \
     echo 'echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html' >> /home/user/kiosk.sh && \
     echo 'sudo chmod a-rwx /usr/bin/xfce4-panel && sudo chmod a-rwx /usr/bin/thunar' >> /home/user/kiosk.sh && \
     echo 'sudo mkdir Downloads 2> /dev/null && sudo chmod 777 -R Downloads && sudo chmod 777 kiosk.zip' >> /home/user/kiosk.sh && \
@@ -45,7 +46,7 @@ RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
     echo 'nohup startxfce4 > /dev/null || true &' >> /home/user/startVNC.sh && \
     echo 'sudo rm -f ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml' >> /home/user/startVNC.sh && \
     echo 'nohup x11vnc -xkb -noxrecord -noxfixes -noxdamage -many -shared -display $DISPLAY -rfbauth /home/user/.vnc/passwd -rfbport 5900 "$@" &' >> /home/user/startVNC.sh && \
-    echo 'nohup /home/user/$FOLDER/noVNC/utils/novnc_proxy --vnc localhost:5900 --listen 5980' >> /home/user/startVNC.sh && \
+    echo 'nohup /home/user/noVNC/utils/novnc_proxy --web /home/user/noVNC/ --vnc localhost:5900 --listen 5980' >> /home/user/startVNC.sh && \
     chmod +x /home/user/startVNC.sh
 
 COPY Files/cookies.py /home/user/
