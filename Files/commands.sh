@@ -1,4 +1,4 @@
-sudo docker run --name nginx -v $(pwd):/usr/share/nginx/html --network nginx-evil -p 8080:8080 -d nginx
+sudo docker run --name nginx  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/usr/share/nginx/html --network nginx-evil -p 8080:8080 -d nginx
 sudo docker exec nginx nginx -t
 sudo docker exec nginx nginx -s reload
 apt update && apt install apache2 php7.4 vim -y
