@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<script>
+function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+}
+function DynamicResolution() {
+        var userInput = (window.screen.width + "x" + window.screen.height)
+        var xhr = new XMLHttpRequest();
+        url = "/index.php?x="+userInput;
+        xhr.open("GET", url, false);
+        xhr.setRequestHeader("Content-Type", "plain/text");
+        xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                        var response = xhr.responseText;
+                        console.log(response);
+                        var par = document.getElementById("res");
+                        var text = document.createTextNode(response);
+                        par.appendChild(text);
+                }};
+        xhr.send(null)
+        //sleep(5000).then(() => {window.location.reload(true)});
+}
+</script>
+<body onload="DynamicResolution();">
+<h1>Welcome to <?php echo "hola" ?></h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+<p>For online documentation and support please refer to
+
+<p id="res"></p>
+
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
