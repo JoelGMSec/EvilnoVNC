@@ -62,10 +62,19 @@ if (is_writable($filename)) {
     fwrite($fp, "check");
     fclose($fp);
     $resolu = $_GET['x'];
+    $check_res = explode("x",$resolu);
+    if (!is_numeric($check_res[0]) || !is_numeric($check_res[1]) ) {
+        echo "error";
+        exit;
+    }
+
     echo $uidphp;
     system("sudo docker run -d --rm  -v download_string:/home/user/Downloads -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
 
     system('sudo nginx -s reload');
+}else{
+    echo "error";
+    exit;
 }
 
 ?>

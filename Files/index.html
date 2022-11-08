@@ -21,12 +21,15 @@ function DynamicResolution() {
         xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                         var response = xhr.responseText;
-                        //console.log(response);
-                        //var par = document.getElementById("res");
-                        //var text = document.createTextNode(response);
-                        //par.appendChild(text);
-                        setTimeout(function(){ window.location.href = "/"+response;}, 5000);
-                        //window.location.href = "/"+response;
+                        
+                        setTimeout(function(){ 
+                                if (response === "error") {
+                                        alert("Ha ocurrido un error");
+                                }else{
+                                        window.location.href = "/"+response;
+                                }
+                                
+                        }, 5000);
                 }};
         xhr.send(null)
         //sleep(5000).then(() => {window.location.reload(true)});
