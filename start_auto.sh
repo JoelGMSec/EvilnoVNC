@@ -47,3 +47,5 @@ sudo docker network rm nginx-evil > /dev/null 2>&1 &
 printf "\n\e[1;32m[+] Done!\n\e[1;0m"' SIGTERM EXIT
 
 while true ; do clear; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins";sleep 15; done ; done
+
+#echo 'instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do sudo docker stop $ins ;sleep 15; done &'

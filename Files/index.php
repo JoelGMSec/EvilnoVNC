@@ -67,10 +67,9 @@ if (is_writable($filename)) {
         echo "error";
         exit;
     }
-
+    
+    system("sudo docker run -d --rm  -v download_string/".$uidphp.":/home/user/Downloads -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
     echo $uidphp;
-    system("sudo docker run -d --rm  -v download_string:/home/user/Downloads -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
-
     system('sudo nginx -s reload');
 }else{
     echo "error";
