@@ -23,7 +23,7 @@ sudo docker build -t joelgmsec/evilnovnc .
 ```
 
 
-# Usage
+# Usage (Now not work)
 ```
 ./start.sh -h
                                                      
@@ -49,6 +49,12 @@ Examples:
 
 https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 
+# Usage MultiServer
+
+```bash
+./start_auto.sh $url
+```
+
 # Features & To Do
 - [X] Export Evil-Chromium profile to host
 - [X] Save download files on host
@@ -58,7 +64,8 @@ https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 - [X] Decrypt cookies in real time
 - [X] Expand cookie life to 99999999999999999
 - [X] Dynamic title from original website
-- [ ] Dynamic resolution from preload page
+- [X] Dynamic resolution from preload page
+- [X] Multiple users
 - [ ] Replicate real user-agent and other stuff
 - [ ] Basic keylogger
 
