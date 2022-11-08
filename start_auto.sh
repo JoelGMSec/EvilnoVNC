@@ -1,5 +1,17 @@
 #!/bin/bash
 
+function banner {
+    printf "\e[1;34m                                                     
+    _____       _ _          __     ___   _  ____ 
+    | ____|_   _(_) |_ __   __\ \   / / \ | |/ ___|
+    |  _| \ \ / / | | '_ \ / _ \ \ / /|  \| | |    
+    | |___ \ V /| | | | | | (_) \ V / | |\  | |___ 
+    |_____| \_/ |_|_|_| |_|\___/ \_/  |_| \_|\____|                                                
+                                                
+    \e[1;32m  ---------------- by @JoelGMSec ft wanetty --------------\n\e[1;0m
+    
+    ";
+}
 
 #sudo service docker start > /dev/null 2>&1 ; sleep 3 ; fi ; fi
 # Help & Usage
@@ -15,6 +27,7 @@ fi ; exit 0 ; fi
 
 # Variables
 WEBPAGE=$1
+
 
 path=$(pwd)
 printf "\n\e[1;33m[>]Preparando nginx..."
@@ -46,6 +59,6 @@ sudo docker stop evilnginx > /dev/null 2>&1 &
 sudo docker network rm nginx-evil > /dev/null 2>&1 &
 printf "\n\e[1;32m[+] Done!\n\e[1;0m"' SIGTERM EXIT
 
-while true ; do clear; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins";sleep 15; done ; done
+while true ; do clear; banner; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins"; done sleep 15; done
 
-#echo 'instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do sudo docker stop $ins ;sleep 15; done &'
+#echo 'instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do sudo docker stop $ins; done &'

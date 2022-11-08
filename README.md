@@ -55,6 +55,8 @@ https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 ./start_auto.sh $url
 ```
 
+If you want to make it more credible, modify the index.html by adapting the js code.
+
 # Features & To Do
 - [X] Export Evil-Chromium profile to host
 - [X] Save download files on host
@@ -68,6 +70,7 @@ https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 - [X] Multiple users
 - [ ] Replicate real user-agent and other stuff
 - [ ] Basic keylogger
+
 
 
 # License
