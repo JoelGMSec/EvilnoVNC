@@ -58,16 +58,17 @@ if (is_writable($filename)) {
     fwrite($fp, implode('', $lines));
     fwrite($fp, $text_modifiqued);
     fclose($fp);
-    $fp = fopen($flag, 'a');
-    fwrite($fp, "check");
-    fclose($fp);
+    if (!file_exists($flag)){
+        $fp = fopen($flag, 'a');
+        fwrite($fp, "check");
+        fclose($fp); 
+    }
     $resolu = $_GET['x'];
     $check_res = explode("x",$resolu);
     if (!is_numeric($check_res[0]) || !is_numeric($check_res[1]) ) {
         echo "error";
         exit;
     }
-    
     system("sudo docker run -d --rm  -v download_string/".$uidphp.":/home/user/Downloads -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
     echo $uidphp;
     system('sudo nginx -s reload');
