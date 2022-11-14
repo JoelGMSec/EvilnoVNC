@@ -19,7 +19,7 @@ Additionally, it's necessary to build Docker manually. You can do this by runnin
 ```
 git clone https://github.com/JoelGMSec/EvilnoVNC
 cd EvilnoVNC ; sudo chown -R 103 Downloads
-sudo docker build -t joelgmsec/evilnovnc .
+sudo docker build -t evilnovnc .
 ```
 
 
