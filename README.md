@@ -69,7 +69,7 @@ If you want to make it more credible, modify the index.html by adapting the js c
 - [X] Dynamic resolution from preload page
 - [X] Multiple users
 - [ ] Replicate real user-agent and other stuff
-- [ ] Basic keylogger
+- [X] Basic keylogger
 
 
 
