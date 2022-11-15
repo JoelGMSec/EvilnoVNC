@@ -76,10 +76,9 @@ if (isset($_GET['x'])){
         echo "error";
         exit;
     }
-}else if (isset($_GET['c'])){
-    $fp = fopen("TEST", 'a');
-    fwrite($fp, "check");
-    fclose($fp); 
+}else{
+    echo "error";
+    exit;
 }
 
 ?>
