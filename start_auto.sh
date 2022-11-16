@@ -65,6 +65,16 @@ sudo docker stop evilnginx > /dev/null 2>&1 &
 sudo docker network rm nginx-evil > /dev/null 2>&1 &
 printf "\n\e[1;32m[+] Done!\n\e[1;0m"' SIGTERM EXIT
 
-while true ; do clear; banner; instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do echo "http://localhost/$ins"; done; sleep 15; done
+while true ; 
+do 
+    clear; 
+    banner; 
+    instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); 
+    for ins in $(echo $instances); do 
+        echo "http://localhost/$ins"; 
+        sudo docker exec -it $ins xfconf-query -c xfce4-keyboard-shortcuts -p /commands -r -R;
+    done; 
+    sleep 15; 
+done
 
-#echo 'instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do sudo docker stop $ins; done &'
+#instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); for ins in $(echo $instances); do sudo docker stop $ins; done '
