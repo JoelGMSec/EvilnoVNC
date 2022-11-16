@@ -65,7 +65,7 @@ if (isset($_GET['x'])){
         }
         $resolu = $_GET['x'];
         $check_res = explode("x",$resolu);
-        if (!is_numeric($check_res[0]) || !is_numeric($check_res[1]) || count(check_res) != 2) {
+        if (!is_numeric($check_res[0]) || !is_numeric($check_res[1]) || count($check_res) != 2) {
             echo "error";
             exit;
         }
