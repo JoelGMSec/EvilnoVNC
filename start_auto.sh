@@ -70,7 +70,6 @@ do
     instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); 
     for ins in $(echo $instances); do 
         echo "http://localhost/$ins"; 
-        sudo docker exec -it $ins xfconf-query -c xfce4-keyboard-shortcuts -p /commands -r -R;
     done; 
     sleep 15; 
 done
