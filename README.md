@@ -17,7 +17,7 @@ In addition, this tool allows us to see in real time all of the victim's actions
 It's recommended to clone the complete repository or download the zip file.\
 Additionally, it's necessary to build Docker manually. You can do this by running the following commands:
 ```
-git clone https://github.com/JoelGMSec/EvilnoVNC
+git clone https://github.com/wanetty/EvilnoVNC
 cd EvilnoVNC ; sudo chown -R 103 Downloads
 sudo docker build -f evilnovnc.Dockerfile -t evilnovnc .
 sudo docker build -f nginx.Dockerfile -t evilnginx .

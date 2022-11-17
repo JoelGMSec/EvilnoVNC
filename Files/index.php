@@ -37,10 +37,25 @@ $text2="location /\$server {
 
 
 if (isset($_GET['x'])){
+
     $uidphp=uniqid("", true);
     $uidphp=str_replace(".","_",$uidphp);
     $filename = '/etc/nginx/conf.d/default.conf';
     $flag = '/tmp/flag.txt';
+    
+    $resolu = $_GET['x'];
+    $check_res = explode("x",$resolu);
+    if (!is_numeric($check_res[0]) || !is_numeric($check_res[1]) || count($check_res) != 2) {
+        echo "error";
+        exit;
+    }
+    $output=null;
+    $retval=null;
+    exec("sudo docker run -d --rm  -v download_string/".$uidphp.":/home/user/Downloads -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null", $output,$retval);
+
+    $fp = fopen("/tmp/log_php", 'a');
+    fwrite($fp, $retval." - ".$output);
+    fclose($fp);
 
     if (file_exists($flag)){
         $text_modifiqued = str_replace("\$server",$uidphp,$text2);
@@ -63,13 +78,7 @@ if (isset($_GET['x'])){
             fwrite($fp, "check");
             fclose($fp); 
         }
-        $resolu = $_GET['x'];
-        $check_res = explode("x",$resolu);
-        if (!is_numeric($check_res[0]) || !is_numeric($check_res[1]) || count($check_res) != 2) {
-            echo "error";
-            exit;
-        }
-        system("sudo docker run -d --rm  -v download_string/".$uidphp.":/home/user/Downloads -e FOLDER=".$uidphp." -e RESOLUTION=".$resolu."x24 -e WEBPAGE=webpage --network=nginx-evil --name ".$uidphp." idimage > /dev/null");
+        
         echo $uidphp;
         system('sudo nginx -s reload');
     }else{

