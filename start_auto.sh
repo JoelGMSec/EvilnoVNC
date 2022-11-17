@@ -8,8 +8,11 @@ function banner {
     | |___ \ V /| | | | | | (_) \ V / | |\  | |___ 
     |_____| \_/ |_|_|_| |_|\___/ \_/  |_| \_|\____|                                                
                                                 
-    \e[1;32m  ---------------- by @JoelGMSec ft wanetty --------------\n\e[1;0m
+    \e[1;32m  ---------------- by @JoelGMSec ft Wanetty --------------\n\e[1;0m
     
+    Now you can access the root of your domain.\n\n
+
+    \n\e[1;33mContainers running\e[1;34m: 
     ";
 }
 

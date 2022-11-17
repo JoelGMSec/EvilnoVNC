@@ -58,6 +58,9 @@ https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 
 If you want to make it more credible, modify the index.html by adapting the js code.
 
+You will find the cookies and the keylogger output inside the Downloads folder in its corresponding id.
+
+
 # Features & To Do
 - [X] Export Evil-Chromium profile to host
 - [X] Save download files on host
