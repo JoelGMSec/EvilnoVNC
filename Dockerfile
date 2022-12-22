@@ -6,7 +6,7 @@ ENV DISPLAY :0
 ENV RESOLUTION 1920x1080x24
 
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev && \
-    ln -s /usr/bin/python3 /usr/bin/python && \
+    rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
