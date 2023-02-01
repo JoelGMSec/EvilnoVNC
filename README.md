@@ -43,6 +43,8 @@ You will find the cookies and the keylogger output inside the Downloads folder i
 - [X] Decrypt cookies in real time
 - [X] Expand cookie life to 99999999999999999
 - [X] Dynamic title from original website
+
+Features added in this project!!
 - [X] Dynamic resolution from preload page
 - [X] Multiple users
 - [X] Basic keylogger
