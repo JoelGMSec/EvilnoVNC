@@ -19,7 +19,7 @@ WORKDIR /home/user
 
 RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd && \
     git clone https://github.com/novnc/noVNC.git /home/user/noVNC && \
-    pip3 install pycryptodome && \
+    pip3 install pycryptodome Crypto && \
     git clone https://github.com/novnc/websockify /home/user/noVNC/utils/websockify && \
     rm -rf /home/user/noVNC/.git && \
     rm -rf /home/user/noVNC/utils/websockify/.git && \
