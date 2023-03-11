@@ -27,21 +27,24 @@ sudo docker build -t joelgmsec/evilnovnc .
 ```
 ./start.sh -h
                                                      
-  _____       _ _          __     ___   _  ____ 
+  _____       _ _          __     ___   _  ____
  | ____|_   _(_) |_ __   __\ \   / / \ | |/ ___|
- |  _| \ \ / / | | '_ \ / _ \ \ / /|  \| | |    
- | |___ \ V /| | | | | | (_) \ V / | |\  | |___ 
- |_____| \_/ |_|_|_| |_|\___/ \_/  |_| \_|\____| 
+ |  _| \ \ / / | | '_ \ / _ \ \ / /|  \| | |
+ | |___ \ V /| | | | | | (_) \ V / | |\  | |___
+ |_____| \_/ |_|_|_| |_|\___/ \_/  |_| \_|\____|
 
   ---------------- by @JoelGMSec --------------
 
-Usage: ./start.sh $resolution $url
+Usage:  ./start.sh $resolution $url
 
 Examples:
         1280x720  16bits: ./start.sh 1280x720x16 http://example.com
         1280x720  24bits: ./start.sh 1280x720x24 http://example.com
         1920x1080 16bits: ./start.sh 1920x1080x16 http://example.com
         1920x1080 24bits: ./start.sh 1920x1080x24 http://example.com
+
+Dynamic resolution:
+        ./start.sh dynamic http://example.com
 
 ```
 
@@ -58,9 +61,9 @@ https://darkbyte.net/robando-sesiones-y-bypasseando-2fa-con-evilnovnc
 - [X] Decrypt cookies in real time
 - [X] Expand cookie life to 99999999999999999
 - [X] Dynamic title from original website
-- [ ] Dynamic resolution from preload page
+- [X] Dynamic resolution from preload page
+- [X] Basic keylogger
 - [ ] Replicate real user-agent and other stuff
-- [ ] Basic keylogger
 
 
 # License
