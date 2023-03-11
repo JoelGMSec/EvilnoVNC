@@ -81,7 +81,8 @@ Cookie value (decrypted): {decrypted_value}
 Creation datetime (UTC): {get_chrome_datetime(creation_utc)}
 Last access datetime (UTC): {get_chrome_datetime(last_access_utc)}
 Expires datetime (UTC): {get_chrome_datetime(expires_utc)}
-===============================================================""")
+
+---------------------------------------------------------------""")
         # update the cookies table with the decrypted value
         # and make session cookie persistent
         cursor.execute("""
