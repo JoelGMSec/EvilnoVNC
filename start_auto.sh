@@ -19,7 +19,7 @@ function banner {
 #sudo service docker start > /dev/null 2>&1 ; sleep 3 ; fi ; fi
 # Help & Usage
 function help {
-printf "\n\e[1;33mUsage:\e[1;0m ./start_auto.sh\e[1;34m\$url\n\n"
+printf "\n\e[1;33mUsage:\e[1;0m ./start_auto.sh\e[1;34m \$url\n\n"
 printf "\e[1;33mExamples:\n"
 printf "\e[1;0m./start_auto.sh \e[1;34mhttp://example.com\n"
 }
