@@ -49,7 +49,7 @@ echo $URL; ?> needs to review the security of your connection before proceeding.
 <script>function sleep (time) {
 return new Promise((resolve) => setTimeout(resolve, time));}
 function DynamicResolution() {
-var userInput = (window.screen.availWidth + "x" + window.screen.availHeight + "x24")
+var userInput = (window.innerWidth + "x" + window.innerHeight + "x24")
 var xhr = new XMLHttpRequest();
 url = window.location.href;
 var data = new FormData();
