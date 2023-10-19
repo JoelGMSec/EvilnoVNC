@@ -74,6 +74,7 @@ This project is licensed under the GNU 3.0 license - see the LICENSE file for mo
 Original idea by [@mrd0x](https://twitter.com/mrd0x): https://mrd0x.com/bypass-2fa-using-novnc \
 This tool has been created and designed from scratch by Joel Gámez Molina // @JoelGMSec
 
+Special thanks to [@ms101](https://github.com/ms101) for some fixes and improvements.
 
 # Contact
 This software does not offer any kind of guarantee. Its use is exclusive for educational environments and / or security audits with the corresponding consent of the client. I am not responsible for its misuse or for any possible damage caused by it.
