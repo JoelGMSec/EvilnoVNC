@@ -8,7 +8,7 @@ ENV FOLDER default
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev python3-tkinter && \
     rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
     pip3 install pyxhook && \
-    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic"' >> /etc/chromium/chromium.conf && \
+    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basici --start-fullscreen --noerrdialogs --no-first-run"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
 RUN adduser -h /home/user -s /bin/bash -S -D user && echo "user:false" | chpasswd && \
