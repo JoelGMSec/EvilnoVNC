@@ -25,6 +25,9 @@ def get_chrome_datetime(chromedate):
 def decrypt_cookies(encrypted_value):
     # Function to get rid of padding
     def clean(x): 
+        if len(x) < 1:
+            # if there aren't enough bytes...
+            return ''
         return x[:-x[-1]].decode('utf8')
 
     # Trim off the 'v10' that Chrome/ium prepends
