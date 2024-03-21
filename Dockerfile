@@ -4,7 +4,7 @@ LABEL maintainer="JoelGMSec - https://darkbyte.net"
 
 ENV DISPLAY :0
 
-RUN apk add sudo bash xvfb xdpyinfo x11vnc chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev php socat python3-tkinter py3-pycryptodome py3-xlib wqy-zenhei vulkan-tools jq vim && \
+RUN apk add sudo bash xvfb xdpyinfo x11vnc chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev php socat python3-tkinter py3-pycryptodome py3-xlib wqy-zenhei vulkan-tools jq && \
     rm -rf /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
     echo 'CHROMIUM_FLAGS="--window-size=WIDTH,HEIGHT --window-position=0,0 --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic --start-fullscreen --noerrdialogs --no-first-run"' >> /etc/chromium/chromium.conf 
 
@@ -46,5 +46,4 @@ ENTRYPOINT ["/bin/bash","-c", "\
             }; \"$@\"", "foo"]
 
 EXPOSE 80
-EXPOSE 81
 CMD ["EvilnoVNC"]

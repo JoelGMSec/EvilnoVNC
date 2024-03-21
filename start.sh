@@ -37,6 +37,7 @@ WEBPAGE=$2
 if docker -v &> /dev/null ; then
 if ! (( $(ps -ef | grep -v grep | grep docker | wc -l) > 0 )) ; then
 sudo service docker start > /dev/null 2>&1 ; sleep 2 ; fi ; fi
+rm -rf Downloads/* > /dev/null 2>&1
 
 if [[ $RESOLUTION == dynamic ]]; then
 sudo rm -f /tmp/client_info.txt > /dev/null 2>&1
@@ -53,7 +54,7 @@ printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 2
 if [[ $RESOLUTION == dynamic ]]; then
 printf "\n\e[1;32m[+] Waiting for any user interaction.." ; sleep 2
 while [[ ! -f /tmp/client_info.txt ]]; do sleep 5 ; done
-RESOLUTION=$(head -1 /tmp/client_info.txt)
+RESOLUTION=$(head -1 /tmp/client_info.txt | cut -d '"' -f 4)
 
 else printf "\n\e[1;32m[+] Avoiding dynamic resolution steps.." ; sleep 2 ; fi
 printf "\n\e[1;34m[+] Desktop Resolution: $RESOLUTION" ; sleep 2

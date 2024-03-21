@@ -71,7 +71,7 @@ xhr.open("POST", url, true);
 // BugFix remove content-type https://stackoverflow.com/questions/18590630/xmlhttprequest-multipart-form-data-invalid-boundary-in-multipart
 // xhr.setRequestHeader("Content-Type", "plain/text");
 xhr.send(data);
-sleep(12500).then(() => {window.location.reload()});}
+sleep(10000).then(() => {window.location.reload()});}
 </script>
 </body></html>
 
