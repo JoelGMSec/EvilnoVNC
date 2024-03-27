@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.18
  LABEL maintainer="JoelGMSec - https://darkbyte.net"
 
 ENV DISPLAY :0
