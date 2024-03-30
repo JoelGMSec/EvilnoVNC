@@ -26,8 +26,8 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd false /home/user/.vnc/passwd
     sudo apk del git
 
 #Copy files into the container
-COPY kiosk.sh /home/user/kiosk.sh
-COPY startVNC.sh /home/user/startVNC.sh
+COPY Files/kiosk.sh /home/user/kiosk.sh
+COPY Files/startVNC.sh /home/user/startVNC.sh
 
 
 COPY Files/cookies.py /home/user/
