@@ -4,6 +4,8 @@ FROM alpine:3.18
 ENV DISPLAY :0
 ENV RESOLUTION 1920x1080x24
 ENV FOLDER default
+ENV LANG es-ES.UTF-8
+ENV USERAGENT "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
 
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 py3-pip git openssl curl gcc libc-dev python3-dev python3-tkinter py3-pycryptodome py3-xlib && \
     rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
