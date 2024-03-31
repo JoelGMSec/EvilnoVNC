@@ -66,7 +66,7 @@ Features added in this project!!
 - [X] Dynamic resolution from preload page
 - [X] Multiple users
 - [X] Basic keylogger
-- [ ] Replicate real user-agent and other stuff
+- [X] Replicate real user-agent and other stuff
 - [ ] Blacklisting of User Agents
 - [ ] Whitelisting of User Agents
 

