@@ -12,9 +12,20 @@ In addition, this tool allows us to see in real time all of the victim's actions
 - Docker
 
 
-# Download
-It's recommended to clone the complete repository or download the zip file.\
+# Installation
+
+It's recommended to clone the complete repository or download the zip file.
 Additionally, it's necessary to build Docker manually. You can do this by running the following commands:
+
+## Auto
+
+```bash
+git clone https://github.com/wanetty/EvilnoVNC
+cd EvilnoVNC
+make build
+```
+## Manual
+
 ```
 git clone https://github.com/wanetty/EvilnoVNC
 cd EvilnoVNC ; sudo chown -R 103 Downloads
@@ -22,6 +33,13 @@ sudo docker build -f evilnovnc.Dockerfile -t evilnovnc .
 sudo docker build -f nginx.Dockerfile -t evilnginx .
 ```
 
+## Cleanup
+
+If you want to remove the automatically built docker images on your system simply run the following commands.
+
+```bash
+make clean
+```
 
 # Usage MultiServer
 
@@ -49,6 +67,8 @@ Features added in this project!!
 - [X] Multiple users
 - [X] Basic keylogger
 - [ ] Replicate real user-agent and other stuff
+- [ ] Blacklisting of User Agents
+- [ ] Whitelisting of User Agents
 
 
 

