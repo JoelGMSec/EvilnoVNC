@@ -7,7 +7,6 @@ cleanup() {
     printf "\n\e[1;33mListing active containers...\e[1;0m\n"
     sudo docker ps -a --filter ancestor=evilnovnc
 
-    printf "\n\e[1;33mAsking the user if they want to stop and remove all containers...\e[1;0m\n"
     printf "\n\e[1;33mDo you want to stop and remove all containers? (y/n):\e[1;0m "
     read -r response
     if [[ "$response" == "y" ]]; then
