@@ -86,7 +86,8 @@ do
     instances=$(sudo docker  ps | grep 5980 | awk -F"tcp" '{print $2}' | tr -d " "); 
     for ins in $(echo $instances); do 
         echo "http://localhost/$ins"; 
-    done; 
+    done;
+    sudo chown -R 103 Downloads > /dev/null 
     sleep 15; 
 done
 
