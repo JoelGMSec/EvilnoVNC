@@ -17,6 +17,8 @@ import (
 	"github.com/google/uuid"
 )
 
+var MAX_MEMORY = 600 * 1024 * 1024
+
 func getText(server string, first bool) string {
 	text := `
     
@@ -106,6 +108,7 @@ func checkNumDocker() (int, error) {
 			num += 1
 		}
 	}
+
 	return num, nil
 }
 
@@ -129,7 +132,8 @@ func runDocker(uuid string, resolution string, useragent string, language string
 		Image: imageName,
 		Env:   envvars,
 	}, &container.HostConfig{
-		Binds: volumes,
+		Binds:     volumes,
+		Resources: container.Resources{Memory: int64(MAX_MEMORY)},
 	}, &network.NetworkingConfig{
 		EndpointsConfig: map[string]*network.EndpointSettings{
 			"nginx-evil": gatewayConfig,
@@ -145,6 +149,33 @@ func runDocker(uuid string, resolution string, useragent string, language string
 func resoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/reso" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
+		return
+	}
+
+	//Get MAX_RAM from the environment variable
+	maxRam := os.Getenv("MAX_RAM")
+	maxcontainers := 0
+	//Si no existe la variable de entorno maxRamInt tiene que ser 0
+	if maxRam == "" {
+		maxRam = "0"
+	}
+	maxRamInt, err := strconv.Atoi(maxRam)
+	if err != nil {
+		w.Write([]byte("error"))
+		return
+	}
+	if maxRamInt != 0 {
+		maxRamInt = maxRamInt * 1024 * 1024
+		maxcontainers = (maxRamInt - 100) / MAX_MEMORY
+	}
+
+	num, err := checkNumDocker()
+	if err != nil {
+		w.Write([]byte("error"))
+		return
+	}
+	if maxcontainers != 0 && num-1 >= maxcontainers {
+		w.Write([]byte("max_containers"))
 		return
 	}
 
@@ -167,18 +198,12 @@ func resoHandler(w http.ResponseWriter, r *http.Request) {
 
 	folder := os.Args[1]
 	webpage := os.Args[2]
-	err := runDocker(id.String(), resolution, useragent, lang, folder, webpage)
+	err = runDocker(id.String(), resolution, useragent, lang, folder, webpage)
 	if err != nil {
 		w.Write([]byte("error"))
 		return
 	}
-
-	num, err := checkNumDocker()
-	if err != nil {
-		w.Write([]byte("error"))
-		return
-	}
-
+	num += 1
 	text := getText(id.String(), num <= 1)
 	err = writeFile(text)
 	if err != nil {

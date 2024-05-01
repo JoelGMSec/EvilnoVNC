@@ -1,6 +1,6 @@
 export DISPLAY=:0
 mkdir /home/user/noVNC/$FOLDER && cp -r /home/user/noVNC/* /home/user/noVNC/$FOLDER/
-TITLE=$(curl -sk $WEBPAGE | grep "<title>" | grep "</title>" | sed "s/<[^>]*>//g")
+TITLE=$(wget -qO- $WEBPAGE | grep -o '<title>.*</title>' | sed "s/<[^>]*>//g")
 sed -i "124d" /home/user/noVNC/vnc_lite.html &&  sed  "131 i let path=\"$FOLDER/websockify\"" /home/user/noVNC/vnc_lite.html > /home/user/noVNC/index.html 
 echo $TITLE > title.txt && sed -i "4s/.*/$(cat title.txt)/g" noVNC/index.html
 sudo chmod a-rwx /usr/bin/xfce4-panel && sudo chmod a-rwx /usr/bin/thunar

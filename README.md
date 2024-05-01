@@ -44,13 +44,18 @@ make clean
 # Usage MultiServer
 
 ```bash
-./start_auto.sh $url
+./start_auto.sh $url [--no-ddos-protection]
 ```
 
 If you want to make it more credible, modify the index.html by adapting the js code.
 
 You will find the cookies and the keylogger output inside the Downloads folder in its corresponding id.
 
+# Last Update (Not More DoS)
+
+In this latest version a system has been added so that in the event that users start to enter in an uncontrolled manner, the system does not break, as before they started to create containers infinitely and this could bring down the server, with the new system that has been created, now the maximum possible containers will be created so that they work with maximum performance. 
+
+You can always set it back to the way it worked before, i.e. without restrictions, using the `--no-ddos-protection' flag.
 
 # Features & To Do
 - [X] Export Evil-Chromium profile to host
@@ -67,9 +72,10 @@ Features added in this project!!
 - [X] Multiple users
 - [X] Basic keylogger
 - [X] Replicate real user-agent and other stuff
+- [X] Anti DoS attack
 - [ ] Blacklisting of User Agents
 - [ ] Whitelisting of User Agents
-
+- [ ] Any idea...
 
 
 # License
@@ -79,8 +85,6 @@ This project is licensed under the GNU 3.0 license - see the LICENSE file for mo
 # Credits and Acknowledgments
 Original idea by [@mrd0x](https://twitter.com/mrd0x): https://mrd0x.com/bypass-2fa-using-novnc \
 The base docker has been created by  Joel Gámez Molina // @JoelGMSec
-
-
 
 
 # Contact
