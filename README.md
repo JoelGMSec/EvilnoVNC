@@ -7,7 +7,6 @@ Unlike other phishing techniques, EvilnoVNC allows 2FA bypassing by using a real
 
 In addition, this tool allows us to see in real time all of the victim's actions, access to their downloaded files and the entire browser profile, including cookies, saved passwords, browsing history and much more.
 
-
 # Requirements
 - Docker
 
@@ -51,6 +50,8 @@ If you want to make it more credible, modify the index.html by adapting the js c
 
 You will find the cookies and the keylogger output inside the Downloads folder in its corresponding id.
 
+**Attention**: If you want a guide on how to make it work with **HTTPS** feel free to visit: https://blog.wanetty.com/blog/tools/multievilnovnc
+
 # Last Update (Not More DoS)
 
 In this latest version a system has been added so that in the event that users start to enter in an uncontrolled manner, the system does not break, as before they started to create containers infinitely and this could bring down the server, with the new system that has been created, now the maximum possible containers will be created so that they work with maximum performance. 
@@ -90,5 +91,5 @@ The base docker has been created by  Joel Gámez Molina // @JoelGMSec
 # Contact
 This software does not offer any kind of guarantee. Its use is exclusive for educational environments and / or security audits with the corresponding consent of the client. I am not responsible for its misuse or for any possible damage caused by it.
 
-For more information, you can find me on Twitter as [@gm_eduard](https://twitter.com/gm_eduard/) and on @JoelGMSec blog [darkbyte.net](https://darkbyte.net).
+For more information, you can find me on Twitter as [@gm_eduard](https://twitter.com/gm_eduard/), and my bog [blog.wanetty.com](https://blog.wanetty.com) or on @JoelGMSec blog [darkbyte.net](https://darkbyte.net) .
 
