@@ -20,14 +20,14 @@ Additionally, it's necessary to build Docker manually. You can do this by runnin
 ## Auto
 
 ```bash
-git clone https://github.com/wanetty/EvilnoVNC
+git clone https://github.com/wanetty/MultiEvilnoVNC.git
 cd EvilnoVNC
 make build
 ```
 ## Manual
 
 ```
-git clone https://github.com/wanetty/EvilnoVNC
+git clone https://github.com/wanetty/MultiEvilnoVNC.git
 cd EvilnoVNC ; sudo chown -R 103 Downloads
 sudo docker build -f evilnovnc.Dockerfile -t evilnovnc .
 sudo docker build -f nginx.Dockerfile -t evilnginx .
