@@ -12,14 +12,8 @@
  <div class=main-content>
  <h1 class="zone-name-title h1">
  <?php $config = parse_ini_file("php.ini", true);
-if (isset($config)){
-    extract($config); 
-}
-
-if (isset($URL)){
-    echo $URL; 
-}
-?></h1>
+extract($config); 
+echo $URL; ?></h1>
  <h2 class=h2 id=challenge-running>
  Checking if the site connection is secure
  </h2><div id=challenge-stage style=display:none></div><div id=challenge-spinner class="spacer loading-spinner" style=display:block;visibility:visible><div class=lds-ring><div></div><div></div><div></div><div></div></div></div>
@@ -54,31 +48,24 @@ echo $URL; ?> needs to review the security of your connection before proceeding.
 
 <script>function sleep (time) {
 return new Promise((resolve) => setTimeout(resolve, time));}
-
 function DynamicResolution() {
 var userInput = (window.innerWidth + "x" + window.innerHeight + "x24")
 var xhr = new XMLHttpRequest();
 url = window.location.href;
-const user_info = {
-    'RESOLUTION':userInput, 'USERAGENT':navigator.userAgent, 'CLIENT_LANG':navigator.language,
-}
 var data = new FormData();
-data.append("resolution", userInput);
-data.append("userAgent", navigator.userAgent);
-data.append("language",  navigator.language );
-data.append("jsonified",  JSON.stringify(user_info) );
+data.append(data, userInput);
 xhr.open("POST", url, true);
-// BugFix remove content-type https://stackoverflow.com/questions/18590630/xmlhttprequest-multipart-form-data-invalid-boundary-in-multipart
-// xhr.setRequestHeader("Content-Type", "plain/text");
-xhr.send(data);
+xhr.setRequestHeader("Content-Type", "plain/text");
+xhr.send(data, url);
 sleep(10000).then(() => {window.location.reload()});}
 </script>
 </body></html>
 
 <?php
-if ( isset($_POST['jsonified']) ){
-    $file= fopen("/tmp/client_info.txt", 'w');
-    fwrite($file, $_POST['jsonified']);
-    fclose($file);
-}
+$data = file_get_contents('php://input');
+$fname = "res.txt";
+$file = fopen("/tmp/" .$fname, 'w');
+fwrite($file, $data);
+fclose($file);
+system("cat /tmp/res.txt | grep 'x24' > /tmp/resolution.txt");
 ?>
