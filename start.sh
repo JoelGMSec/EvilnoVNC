@@ -50,8 +50,9 @@ printf "\n\e[1;34m[+] URL: http://localhost" ; sleep 2
 printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 2
 
 if [[ $RESOLUTION == dynamic ]]; then
-while [[ $RESOLUTION == "" || $RESOLUTION == dynamic ]]; do sleep 1
-RESOLUTION=$(head -1 /tmp/resolution.txt) ; done
+printf "\n\e[1;32m[+] Waiting for any user interaction.." ; sleep 2
+while [[ ! -f /tmp/resolution.txt ]]; do sleep 5 ; done
+RESOLUTION=$(head -1 /tmp/resolution.txt)
 
 else printf "\n\e[1;32m[+] Avoiding dynamic resolution steps.." ; sleep 2 ; fi
 printf "\n\e[1;34m[+] Desktop Resolution: $RESOLUTION" ; sleep 2
