@@ -79,6 +79,13 @@ Features added in this project!!
 - [ ] Any idea...
 
 
+## Disclaimer
+
+**Warning:** This tool has not been fully tested in Virtual Desktop Infrastructure (VDI) environments, such as those provided by platforms like AWS with pre-installed Kali Linux. Initial testing has revealed functionality issues in these environments.
+
+We recommend using a distribution such as **Ubuntu** for optimal performance. We are conducting further tests to improve compatibility with more environments. Stay tuned for future updates.
+
+
 # License
 This project is licensed under the GNU 3.0 license - see the LICENSE file for more details.
 
