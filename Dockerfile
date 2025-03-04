@@ -1,13 +1,15 @@
-FROM debian:sid-slim
+FROM debian:stable-slim
 LABEL maintainer="JoelGMSec - https://darkbyte.net"
 ENV DISPLAY=:0
 
-RUN apt update && apt install -y \
+RUN apt update && apt install -y --no-install-recommends \
     adduser unzip dbus-x11 procps sudo xfce4 xvfb x11-utils x11vnc jq \
     xfce4-terminal chromium python3 python3-pip git curl gcc php socat && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --no-sandbox --kiosk --password-store=basic --start-fullscreen --noerrdialogs --no-first-run"' >> /etc/chromium/chromium.conf && \
+    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage \
+    --no-sandbox --kiosk --password-store=basic --start-fullscreen --noerrdialogs \
+    --no-first-run"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
 RUN adduser --disabled-password --gecos "" user && \
