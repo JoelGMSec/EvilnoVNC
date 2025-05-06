@@ -1,14 +1,14 @@
 FROM debian:stable-slim
 LABEL maintainer="JoelGMSec - https://darkbyte.net"
-ENV DISPLAY=:0
+ENV DISPLAY=:1
 
 RUN apt update && apt install -y --no-install-recommends \
     adduser unzip dbus-x11 procps sudo xfce4 xvfb x11-utils x11vnc jq \
     xfce4-terminal chromium python3 python3-pip git curl gcc php socat wget && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage \
-    --no-sandbox --kiosk --password-store=basic --start-fullscreen --noerrdialogs \
+    echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --kiosk \
+    --password-store=basic --start-fullscreen --noerrdialogs \
     --no-first-run"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 

@@ -48,7 +48,7 @@ echo $URL; ?> needs to review the security of your connection before proceeding.
 <div class=footer role=contentinfo>
 <div class=footer-inner>
 <div class="clearfix diagnostic-wrapper">
-<div class=ray-id>Ray ID: <code>769931736f5b12a0</code></div></div>
+<div class="ray-id">Ray ID: <?php echo bin2hex(random_bytes(8)); ?></div>
 <div class=text-center>Performance &amp; security by <a rel="noopener noreferrer" href="https://www.cloudflare.com/?utm_source=challenge&amp;utm_campaign=j" target=_blank>Cloudflare</a></div></div></div>
 <span id=trk_jschal_js></span>
 

